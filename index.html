@@ -1,5 +1,46 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f7ff"><meta name="description" content="Lazaynova — مساحة عمل ذكية"><title>Lazaynova</title><link rel="stylesheet" href="styles.css"></head><body>
-<div class="shell"><aside class="sidebar" id="sidebar"><a class="brand" href="#"><span class="logo">L</span>Lazaynova</a><input id="search" placeholder="بحث"><nav><button data-view="chat">▣ <span data-ar="دردشة جديدة" data-en="New chat">دردشة جديدة</span></button><button data-view="history">◷ <span data-ar="المحادثات" data-en="Conversations">المحادثات</span></button><button data-view="library">▤ <span data-ar="المكتبة" data-en="Library">المكتبة</span></button><button data-view="media">▧ <span data-ar="الوسائط" data-en="Media">الوسائط</span></button><button data-view="tasks">▦ <span data-ar="المهام" data-en="Tasks">المهام</span></button></nav><div class="account">◉ <span data-ar="حساب تجريبي" data-en="Demo account">حساب تجريبي</span></div></aside>
-<main><header><button id="menu">☰</button><strong><span class="spark">✦</span> Lazaynova</strong><button id="lang">EN</button></header><section class="welcome" id="welcome"><div class="hero">L</div><div class="wordmark">Lazaynova</div><h1 data-ar="مرحباً بك في Lazaynova 👋" data-en="Welcome to Lazaynova 👋">مرحباً بك في Lazaynova 👋</h1><p data-ar="أنا مساعدك الذكي، جاهز لمساعدتك في أي شيء تتخيله أو تحتاجه." data-en="Your AI assistant is ready to help with what you imagine or need.">أنا مساعدك الذكي، جاهز لمساعدتك في أي شيء تتخيله أو تحتاجه.</p><span class="status">● <span data-ar="مساحة عملك جاهزة" data-en="Your workspace is ready">مساحة عملك جاهزة</span></span></section><section id="messages" aria-live="polite"></section><form id="chat"><button type="button" id="tools" aria-label="Tools">＋</button><textarea id="prompt" rows="1" placeholder="اسأل Lazaynova..." aria-label="Message"></textarea><button class="send" aria-label="Send">➤</button></form><div id="toolbox" hidden><button data-tool="research">⌕ Deep Research</button><button data-tool="image">▧ إنشاء صور</button><button data-tool="documents">▤ المستندات</button><button data-tool="agents">✦ الوكلاء</button><button data-tool="code">⌘ Canvas</button></div><p class="note" data-ar="قد يخطئ الذكاء الاصطناعي. راجع المعلومات المهمة." data-en="AI can make mistakes. Verify important information.">قد يخطئ الذكاء الاصطناعي. راجع المعلومات المهمة.</p></main>
-<aside class="right"><section><b data-ar="المكونات الإضافية" data-en="Extensions">المكونات الإضافية</b><button data-tool="agents">♙ الوكيل الذكي <small>تفكير · تخطيط · تنفيذ</small></button><button data-tool="image">▧ رفع الصور <small>تحليل · استفسار</small></button><button data-tool="documents">▱ رفع الملفات <small>ملفات · مستندات</small></button></section><section><b data-ar="المميزات والمهام الرئيسية" data-en="Main features">المميزات والمهام الرئيسية</b><button data-tool="image">▧ إنشاء صور</button><button data-tool="video">▷ فيديو (مع Veo)</button><button data-tool="music">♫ موسيقى</button><button data-tool="research">⌕ Deep Research</button><button data-tool="code">⌘ Canvas</button></section><section class="banner">✦ <span>Lazaynova<br><small>يفكر · يخطط · ينفذ</small></span></section></aside></div><dialog id="settings"><form method="dialog"><h3>إعدادات الاتصال</h3><label for="api">API URL</label><input id="api" placeholder="http://localhost:8787"><p>لا تضع مفاتيح API في هذه الواجهة.</p><button id="save">حفظ</button><button value="cancel">إغلاق</button></form></dialog><script src="app.js" defer></script></body></html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <title>Lazaynova — منصة الوكلاء الذكية</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">✦</span><div><strong>Lazaynova</strong><small>AI Agent Platform</small></div></div>
+      <button class="new-chat" id="new-chat">＋ محادثة جديدة</button>
+      <p class="side-label">الوكلاء</p>
+      <button class="agent-link active" data-prompt="ساعدني في التخطيط لمهمة معقدة">✦ <span>المنسّق الذكي</span></button>
+      <button class="agent-link" data-prompt="ابحث بعمق عن: ">⌕ <span>وكيل البحث</span></button>
+      <button class="agent-link" data-prompt="ساعدني في البرمجة: ">⌘ <span>وكيل البرمجة</span></button>
+      <button class="agent-link" data-prompt="ساعدني في إعداد مستند: ">▤ <span>وكيل المستندات</span></button>
+      <div class="sidebar-foot">نسخة أولية · MVP</div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><span class="status-dot"></span> النظام جاهز</div><span class="pill">واجهة تجريبية</span></header>
+      <section class="welcome" id="welcome">
+        <div class="hero-icon">✦</div>
+        <p class="eyebrow">وكيلك الذكي، وفريقك كاملًا</p>
+        <h1>ماذا تريد أن <span>تنجز اليوم؟</span></h1>
+        <p class="subtitle">اكتب المهمة ودع Lazaynova يوجّهها إلى التخصص المناسب.</p>
+        <div class="quick-grid">
+          <button data-prompt="ضع خطة تنفيذ لمشروعي خطوة بخطوة">▦ <b>خطط لمشروع</b><small>قسّم المهمة إلى خطوات</small></button>
+          <button data-prompt="ساعدني في كتابة كود منظم لـ ">⌘ <b>اكتب كودًا</b><small>برمجة ومراجعة وتصحيح</small></button>
+          <button data-prompt="ابحث بعمق عن ">⌕ <b>ابحث بعمق</b><small>تحليل موضوع وأسئلة</small></button>
+          <button data-prompt="لخّص وصغ هذا المستند: ">▤ <b>أنشئ مستندًا</b><small>تلخيص وصياغة محتوى</small></button>
+        </div>
+      </section>
+      <section class="chat-area" id="chat-area" hidden><div id="messages" class="messages"></div></section>
+      <form class="composer" id="chat-form">
+        <textarea id="message" rows="1" placeholder="اكتب مهمتك هنا..." required></textarea>
+        <button id="send" type="submit" aria-label="إرسال">↑</button>
+        <div class="composer-foot"><span>لا تضع كلمات مرور أو مفاتيح سرية في المحادثة.</span><span>مدعوم بواجهة API قابلة للتهيئة</span></div>
+      </form>
+    </main>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>
