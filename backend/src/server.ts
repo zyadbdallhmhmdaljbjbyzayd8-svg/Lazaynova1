@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { z } from "zod";
+import { runMultiAgent } from "./orchestrator.js";
 
 const app = express();
 const port = Number(process.env.PORT || 8787);
@@ -38,7 +39,7 @@ function routeIntent(s: string): Intent {
   if (/image|picture|صورة|صور|ارسم/.test(t)) return "image";
   if (/video|فيديو/.test(t)) return "video";
   if (/music|song|موسيقى|أغنية/.test(t)) return "music";
-  if (/agent|automate|وكيل|نفذ المهمة|خطط/.test(t)) return "agent";
+  if (/agent|automate|وكيل|نفذ المهمة|خطط|تخطيط|قسّم المهمة/.test(t)) return "agent";
   return "chat";
 }
 async function aiGateway(message: string, language: "ar" | "en", history: Array<{ role: "user" | "assistant"; content: string }> = [], intent: Intent) {
@@ -82,6 +83,18 @@ app.post("/api/chat", async (req: Request, res: Response, next: NextFunction) =>
     if (!parsed.success) return res.status(400).json({ error: "Invalid request", details: parsed.error.flatten() });
     const { message, language, history = [] } = parsed.data;
     const intent = routeIntent(message);
+    if (intent === "agent") {
+      const workflow = await runMultiAgent(message, language, history, (prompt, lang, turns, agent) =>
+        aiGateway(prompt, lang, turns, agent)
+      );
+      return res.json({
+        reply: workflow.reply,
+        intent,
+        agent: agents.agent.name,
+        workflow: workflow.steps,
+        provider: "configured-gateway"
+      });
+    }
     const reply = await aiGateway(message, language, history, intent);
     return res.json({ reply, intent, agent: agents[intent].name, provider: "configured-gateway" });
   } catch (e) { next(e); }
