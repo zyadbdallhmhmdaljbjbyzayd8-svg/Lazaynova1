@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { z } from "zod";
 import { runMultiAgent } from "./orchestrator.js";
+import { getEngine, isEngineId, listEngines, type EngineId } from "./engines.js";
 
 const app = express();
 const port = Number(process.env.PORT || 8787);
@@ -20,7 +21,7 @@ const schema = z.object({
     content: z.string().max(12000)
   })).max(20).optional()
 });
-type Intent = "chat" | "research" | "coding" | "documents" | "image" | "video" | "music" | "agent";
+type Intent = EngineId;
 const agents: Record<Intent, { name: string; system: string }> = {
   chat: { name: "المنسق الذكي", system: "أنت المنسق الذكي في Lazaynova. أجب بوضوح واطلب التوضيح عند الحاجة." },
   research: { name: "وكيل البحث", system: "أنت وكيل بحث. ميّز بين الحقائق والافتراضات، اقترح كلمات بحث ومصادر موثوقة، ولا تختلق مصادر أو نتائج بحث لم تنفذها." },
@@ -77,6 +78,26 @@ async function aiGateway(message: string, language: "ar" | "en", history: Array<
 }
 app.get("/health", (_q: Request, r: Response) => r.json({ status: "ok", service: "lazaynova-api", version: "0.2.0" }));
 app.get("/api/agents", (_q: Request, r: Response) => r.json({ agents: Object.entries(agents).map(([id, agent]) => ({ id, name: agent.name })) }));
+app.get("/api/engines", (_q: Request, r: Response) => {
+  r.json({ engines: listEngines() });
+});
+app.post("/api/engines/:id/run", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = String(req.params.id);
+    if (!isEngineId(id)) return res.status(404).json({ error: "Unknown engine", available: listEngines().map((engine) => engine.id) });
+    const parsed = schema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: "Invalid request", details: parsed.error.flatten() });
+    const { message, language, history = [] } = parsed.data;
+    if (id === "agent") {
+      const workflow = await runMultiAgent(message, language, history, (prompt, lang, turns, agent) =>
+        aiGateway(prompt, lang, turns, agent)
+      );
+      return res.json({ engine: getEngine(id), reply: workflow.reply, workflow: workflow.steps, provider: "configured-gateway" });
+    }
+    const reply = await aiGateway(message, language, history, id);
+    return res.json({ engine: getEngine(id), reply, provider: "configured-gateway" });
+  } catch (e) { next(e); }
+});
 app.post("/api/chat", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const parsed = schema.safeParse(req.body);
