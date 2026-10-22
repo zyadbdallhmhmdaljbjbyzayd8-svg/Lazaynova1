@@ -10,3 +10,25 @@ app/build/
 .idea/
 *.iml
 .DS_Store
+.env.*
+!.env.example
+*.keystore
+*.jks
+dist/
+*.kt.backup
+*.log
+
+# Private secrets and local configuration
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local data and backups
+backend/data/knowledge.json
+*.keystore
+*.jks
+*.kt.backup
+*.log

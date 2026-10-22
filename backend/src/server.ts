@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { z } from "zod";
 import { runMultiAgent } from "./orchestrator.js";
+import { knowledgeRouter } from "./knowledge-routes.js";
 import { getEngine, isEngineId, listEngines, type EngineId } from "./engines.js";
 
 const app = express();
@@ -186,6 +187,7 @@ app.post("/api/chat", async (req: Request, res: Response, next: NextFunction) =>
     return res.json({ reply, intent, agent: agents[intent].name, provider: process.env.AI_PROVIDER || "local" });
   } catch (e) { next(e); }
 });
+app.use("/api/knowledge", knowledgeRouter);
 app.use((_q: Request, r: Response) => r.status(404).json({ error: "Not found" }));
 app.use((e: Error & { status?: number }, _q: Request, r: Response, _n: NextFunction) => {
   const status = e.status || 502;
