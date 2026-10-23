@@ -1,0 +1,9 @@
+مرحباً بك في لازينوفا.
+لازينوفا مشروع ذكاء اصطناعي مستقل قيد التطوير.
+يتعلم النموذج اللغوي توقع الرمز التالي اعتماداً على النصوص التي يتدرب عليها.
+هذا النص مثال صغير للتجربة فقط، وليس بيانات كافية لبناء مساعد ذكي.
+البرمجة تحتاج إلى اختبار وتحسين مستمر.
+Hello from Lazaynova.
+Lazaynova is an independent AI project under development.
+A language model learns to predict the next token from training text.
+This sample is only for testing and is not enough to build a capable assistant.
