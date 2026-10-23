@@ -173,7 +173,7 @@ private fun LazaynovaApp() {
                                 else -> dialogTitle = it
                             }
                         },
-                        modifier = Modifier.width(if (wide) 235.dp else maxWidth * .82f)
+                        modifier = Modifier.width(if (wide) 235.dp else this@BoxWithConstraints.maxWidth * .82f)
                     )
                 }
 
