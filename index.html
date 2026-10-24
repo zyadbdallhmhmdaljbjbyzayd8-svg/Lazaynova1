@@ -1,46 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1020">
-  <title>Lazaynova — منصة الوكلاء الذكية</title>
-  <link rel="stylesheet" href="./styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazaynova — المساعد الذكي</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="shell">
-    <aside class="sidebar">
-      <div class="brand"><span class="brand-mark">✦</span><div><strong>Lazaynova</strong><small>AI Agent Platform</small></div></div>
-      <button class="new-chat" id="new-chat">＋ محادثة جديدة</button>
-      <p class="side-label">الوكلاء</p>
-      <button class="agent-link active" data-prompt="ساعدني في التخطيط لمهمة معقدة">✦ <span>المنسّق الذكي</span></button>
-      <button class="agent-link" data-prompt="ابحث بعمق عن: ">⌕ <span>وكيل البحث</span></button>
-      <button class="agent-link" data-prompt="ساعدني في البرمجة: ">⌘ <span>وكيل البرمجة</span></button>
-      <button class="agent-link" data-prompt="ساعدني في إعداد مستند: ">▤ <span>وكيل المستندات</span></button>
-      <div class="sidebar-foot">نسخة أولية · MVP</div>
-    </aside>
-    <main class="main">
-      <header class="topbar"><div><span class="status-dot"></span> النظام جاهز</div><span class="pill">واجهة تجريبية</span></header>
-      <section class="welcome" id="welcome">
-        <div class="hero-icon">✦</div>
-        <p class="eyebrow">وكيلك الذكي، وفريقك كاملًا</p>
-        <h1>ماذا تريد أن <span>تنجز اليوم؟</span></h1>
-        <p class="subtitle">اكتب المهمة ودع Lazaynova يوجّهها إلى التخصص المناسب.</p>
-        <div class="quick-grid">
-          <button data-prompt="ضع خطة تنفيذ لمشروعي خطوة بخطوة">▦ <b>خطط لمشروع</b><small>قسّم المهمة إلى خطوات</small></button>
-          <button data-prompt="ساعدني في كتابة كود منظم لـ ">⌘ <b>اكتب كودًا</b><small>برمجة ومراجعة وتصحيح</small></button>
-          <button data-prompt="ابحث بعمق عن ">⌕ <b>ابحث بعمق</b><small>تحليل موضوع وأسئلة</small></button>
-          <button data-prompt="لخّص وصغ هذا المستند: ">▤ <b>أنشئ مستندًا</b><small>تلخيص وصياغة محتوى</small></button>
-        </div>
-      </section>
-      <section class="chat-area" id="chat-area" hidden><div id="messages" class="messages"></div></section>
-      <form class="composer" id="chat-form">
-        <textarea id="message" rows="1" placeholder="اكتب مهمتك هنا..." required></textarea>
-        <button id="send" type="submit" aria-label="إرسال">↑</button>
-        <div class="composer-foot"><span>لا تضع كلمات مرور أو مفاتيح سرية في المحادثة.</span><span>مدعوم بواجهة API قابلة للتهيئة</span></div>
-      </form>
-    </main>
-  </div>
-  <script src="./app.js"></script>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-area">
+                    <div class="logo-icon">L</div>
+                    <span class="logo-text">Lazaynova</span>
+                </div>
+                <button class="close-sidebar" id="closeSidebar">&times;</button>
+            </div>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="بحث...">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><span class="icon">💬</span> دردشة جديدة</a>
+                <a href="#" class="nav-item"><span class="icon">🕒</span> المحادثات</a>
+                <a href="#" class="nav-item"><span class="icon">📖</span> المكتبة</a>
+                <a href="#" class="nav-item"><span class="icon">🖼️</span> الوسائط</a>
+                <a href="#" class="nav-item"><span class="icon">📄</span> المستندات</a>
+                <a href="#" class="nav-item"><span class="icon">📅</span> جدولة</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="menu-btn" id="menuBtn">☰</button>
+                <div class="top-logo"><span class="sparkle">✦</span> Lazaynova</div>
+            </header>
+            <div class="chat-viewport" id="chatViewport">
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="hero-logo-container">
+                        <div class="hero-3d-logo">L</div>
+                        <h1 class="hero-title">مرحباً بك في Lazaynova 👋</h1>
+                        <p class="hero-subtitle">أنا مساعدك الذكي، جاهز لمساعدتك في أي شيء.</p>
+                    </div>
+                </div>
+                <div class="messages-container" id="messagesContainer"></div>
+            </div>
+            <div class="input-area-wrapper">
+                <div class="input-bar">
+                    <button class="tool-trigger-btn" id="toolTriggerBtn">+</button>
+                    <input type="text" id="userInput" placeholder="اسأل Lazaynova..." autocomplete="off">
+                    <button class="send-btn" id="sendBtn">⬆</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
 </body>
 </html>
