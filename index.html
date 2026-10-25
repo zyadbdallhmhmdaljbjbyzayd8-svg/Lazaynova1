@@ -1,59 +1,214 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lazaynova — المساعد الذكي</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazaynova - منصة الذكاء الاصطناعي السيادية</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-area">
-                    <div class="logo-icon">L</div>
-                    <span class="logo-text">Lazaynova</span>
-                </div>
-                <button class="close-sidebar" id="closeSidebar">&times;</button>
-            </div>
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" placeholder="بحث...">
-            </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active"><span class="icon">💬</span> دردشة جديدة</a>
-                <a href="#" class="nav-item"><span class="icon">🕒</span> المحادثات</a>
-                <a href="#" class="nav-item"><span class="icon">📖</span> المكتبة</a>
-                <a href="#" class="nav-item"><span class="icon">🖼️</span> الوسائط</a>
-                <a href="#" class="nav-item"><span class="icon">📄</span> المستندات</a>
-                <a href="#" class="nav-item"><span class="icon">📅</span> جدولة</a>
-            </nav>
-        </aside>
-        <main class="main-content">
-            <header class="top-bar">
-                <button class="menu-btn" id="menuBtn">☰</button>
-                <div class="top-logo"><span class="sparkle">✦</span> Lazaynova</div>
-            </header>
-            <div class="chat-viewport" id="chatViewport">
-                <div class="welcome-screen" id="welcomeScreen">
-                    <div class="hero-logo-container">
-                        <div class="hero-3d-logo">L</div>
-                        <h1 class="hero-title">مرحباً بك في Lazaynova 👋</h1>
-                        <p class="hero-subtitle">أنا مساعدك الذكي، جاهز لمساعدتك في أي شيء.</p>
-                    </div>
-                </div>
-                <div class="messages-container" id="messagesContainer"></div>
-            </div>
-            <div class="input-area-wrapper">
-                <div class="input-bar">
-                    <button class="tool-trigger-btn" id="toolTriggerBtn">+</button>
-                    <input type="text" id="userInput" placeholder="اسأل Lazaynova..." autocomplete="off">
-                    <button class="send-btn" id="sendBtn">⬆</button>
-                </div>
-            </div>
-        </main>
+  <div class="app-container">
+    
+    <!-- شريط العلو الرئيسي -->
+    <header class="app-header">
+      <button id="menu-btn" class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <div class="logo-area">
+        <span class="sparkle-icon">✨</span>
+        <h1 class="logo-text">Lazaynova</h1>
+      </div>
+      <div class="header-actions">
+        <button id="call-btn" class="icon-btn" title="مكالمة صوتية">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        </button>
+        <button id="options-btn" class="icon-btn" title="خيارات إضافية">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- المحتوى الرئيسي (الشاشة الرئيسية أو المحادثة) -->
+    <main class="app-main">
+      <!-- شاشة الترحيب الافتراضية -->
+      <div id="welcome-screen" class="welcome-screen">
+        <div class="hero-3d-glow">
+          <div class="crystal-logo">L</div>
+          <div class="ring-glow"></div>
+        </div>
+        <h2 class="welcome-title">مرحباً بك في Lazaynova ✨</h2>
+        <p class="welcome-subtitle">أسأل، أنشئ، تعلم، أو اطلب تنفيذ مهمة.</p>
+      </div>
+
+      <!-- حاوية الرسائل والمحادثة -->
+      <div id="chat-container" class="chat-container hidden">
+        <!-- يتم حقن الرسائل هنا برمجياً -->
+      </div>
+    </main>
+
+    <!-- شريط الإدخال السفلي -->
+    <footer class="app-footer">
+      <div class="input-wrapper">
+        <button id="add-btn" class="input-icon-btn" title="أدوات ومرفقات">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <input type="text" id="user-input" placeholder="اسأل رسالتك إلى Lazaynova..." autocomplete="off">
+        <button id="mic-btn" class="input-icon-btn" title="التسجيل الصوتي">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        </button>
+        <button id="send-btn" class="send-action-btn" title="إرسال">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+        </button>
+      </div>
+      <div class="home-indicator"></div>
+    </footer>
+
+    <!-- القائمة الجانبية (Drawer Sidebar) -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="user-profile">
+          <div class="avatar">ز</div>
+          <div class="user-info">
+            <h3>زايد الجبيجي</h3>
+            <span>حسابي الشخصي</span>
+          </div>
+        </div>
+        <button id="close-sidebar" class="icon-btn">✕</button>
+      </div>
+      <div class="sidebar-menu">
+        <a href="#" class="menu-item active" id="new-chat-menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          محادثة جديدة
+        </a>
+        <a href="#" class="menu-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          المحادثات
+        </a>
+        <a href="#" class="menu-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path></svg>
+          الوكلاء
+        </a>
+        <a href="#" class="menu-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          الذاكرة والملفات
+        </a>
+        <a href="#" class="menu-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          الأمان والخصوصية
+        </a>
+        <a href="#" class="menu-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          الإعدادات
+        </a>
+      </div>
+      <div class="sidebar-footer">
+        <div class="core-badge">
+          <span>Lazaynova Core (محلي بالكامل)</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- نافذة أدوات لازينوفا الثمانية (Tools Modal) -->
+    <div id="tools-modal" class="modal-backdrop">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>أدوات لازينوفا السيادية</h3>
+          <button id="close-tools" class="icon-btn">✕</button>
+        </div>
+        <div class="tools-grid">
+          <button class="tool-card" data-engine="chat">
+            <span class="tool-icon">💬</span>
+            <span class="tool-name">محادثة عامة</span>
+          </button>
+          <button class="tool-card" data-engine="research">
+            <span class="tool-icon">🔍</span>
+            <span class="tool-name">البحث العميق</span>
+          </button>
+          <button class="tool-card" data-engine="coding">
+            <span class="tool-icon">💻</span>
+            <span class="tool-name">محرك البرمجة</span>
+          </button>
+          <button class="tool-card" data-engine="documents">
+            <span class="tool-icon">📄</span>
+            <span class="tool-name">رفع المستندات</span>
+          </button>
+          <button class="tool-card" data-engine="image">
+            <span class="tool-icon">🖼️</span>
+            <span class="tool-name">توليد الصور</span>
+          </button>
+          <button class="tool-card" data-engine="video">
+            <span class="tool-icon">🎬</span>
+            <span class="tool-name">توليد الفيديو</span>
+          </button>
+          <button class="tool-card" data-engine="music">
+            <span class="tool-icon">🎵</span>
+            <span class="tool-name">توليد الموسيقى</span>
+          </button>
+          <button class="tool-card" data-engine="agent">
+            <span class="tool-icon">🤖</span>
+            <span class="tool-name">الوكيل الموجه</span>
+          </button>
+        </div>
+        <div class="modal-banner">
+          <span>✨ يمكنك الوصول إلى كافة الأدوات والميزات من هنا. العمليات تتم محلياً بالكامل.</span>
+        </div>
+      </div>
     </div>
-    <script src="app.js"></script>
+
+    <!-- نافذة خيارات المرفقات (Attachment Sheet) -->
+    <div id="attachment-modal" class="modal-backdrop">
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <h4>إرسال صورة أو ملف</h4>
+        <button class="sheet-option" id="pick-gallery">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          اختر من المعرض
+        </button>
+        <button class="sheet-option" id="pick-camera">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          التقاط صورة
+        </button>
+        <button class="sheet-option" id="pick-file">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          اختر ملف
+        </button>
+        <button class="sheet-cancel" id="close-attachment">إلغاء</button>
+      </div>
+    </div>
+
+    <!-- شاشة المكالمة الصوتية السيادية (Voice Call Overlay) -->
+    <div id="voice-call-overlay" class="call-overlay hidden">
+      <div class="call-header">
+        <span id="call-timer">00:00</span>
+      </div>
+      <div class="call-center">
+        <h3>مكالمة مع لازينوفا</h3>
+        <div class="call-orb-container">
+          <div class="call-orb">L</div>
+          <div class="call-ring r1"></div>
+          <div class="call-ring r2"></div>
+        </div>
+        <div class="audio-waves">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="call-controls">
+        <button id="mute-call" class="call-ctrl-btn" title="كتم الصوت">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        </button>
+        <button id="end-call" class="call-ctrl-btn end-btn" title="إنهاء المكالمة">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"></path></svg>
+        </button>
+        <button id="speaker-call" class="call-ctrl-btn" title="مكبر الصوت">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
