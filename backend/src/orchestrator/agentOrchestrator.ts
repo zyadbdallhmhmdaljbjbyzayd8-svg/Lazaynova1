@@ -1,14 +1,14 @@
-import { EngineManager } from '../engines/engineManager';
-import { LocalKnowledgeBase } from '../knowledge/knowledgeBase';
+import { EngineManager } from "../engines/engineManager.js";
+import { LocalKnowledgeBase } from "../knowledge/knowledgeBase.js";
 
 export class AgentOrchestrator {
   private engineManager = new EngineManager();
   private kb = new LocalKnowledgeBase();
 
-  async runWorkflow(message: string, engineId: string = 'agent') {
+  async runWorkflow(message: string, engineId: string = "agent") {
     // 1. البحث في المعرفة المحلية (RAG)
     const searchResults = this.kb.search(message);
-    const context = searchResults.map(r => `- ${r.title}: ${r.content}`).join('\n');
+    const context = searchResults.map((r: { title: string; content: string }) => `- ${r.title}: ${r.content}`).join("\n");
 
     // 2. مرحلة التخطيط
     const plan = `[مرحلة التخطيط]: تحليل الطلب وتحديد نطاق التنفيذ عبر محرك (${engineId}).`;
