@@ -105,6 +105,7 @@ private fun LazaynovaApp() {
     var showNavigation by remember { mutableStateOf(false) }
     var showTools by remember { mutableStateOf(false) }
     var dialogTitle by remember { mutableStateOf<String?>(null) }
+    var selectedEngine by remember { mutableStateOf("chat") }
     val scope = rememberCoroutineScope()
 
     val tools = listOf(
@@ -137,8 +138,9 @@ private fun LazaynovaApp() {
         ) {
             Column(Modifier.fillMaxSize()) {
                     Header(
+                        selectedEngine = selectedEngine,
+                        onEngineSelected = { selectedEngine = it },
                         onMenu = { showNavigation = !showNavigation },
-                        onCall = { dialogTitle = "المكالمة الصوتية" },
                         onNewChat = {
                             messages.clear()
                             messages.add(ChatMessage("assistant", welcome))
@@ -230,6 +232,7 @@ private fun LazaynovaApp() {
                         enabled = !busy,
                         onAdd = { showTools = true },
                         onVoice = { dialogTitle = "المحادثة الصوتية" },
+                        onCall = { dialogTitle = "المكالمة الصوتية" },
                         onSend = {
                             val question = input.trim()
                             if (question.isNotEmpty() && !busy) {
@@ -242,7 +245,7 @@ private fun LazaynovaApp() {
                                 error = null
                                 scope.launch {
                                     try {
-                                        val answer = ApiClient.chat(question, history)
+                                        val answer = ApiClient.chat(question, history, selectedEngine)
                                         messages.add(ChatMessage("assistant", answer.reply))
                                     } catch (e: Exception) {
                                         error = e.message ?: "تعذر الاتصال بالخادم."
@@ -282,7 +285,7 @@ private fun LazaynovaApp() {
                         showNavigation = false
                         dialogTitle = item
                     },
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier.align(Alignment.CenterStart)
                         .fillMaxHeight().fillMaxWidth(.84f)
                 )
             }
@@ -365,9 +368,29 @@ private fun LazaynovaApp() {
 }
 
 @Composable
-private fun Header(onMenu: () -> Unit, onCall: () -> Unit, onNewChat: () -> Unit) {
+private fun Header(
+    selectedEngine: String,
+    onEngineSelected: (String) -> Unit,
+    onMenu: () -> Unit,
+    onNewChat: () -> Unit
+) {
+    var engineMenu by remember { mutableStateOf(false) }
+    var moreMenu by remember { mutableStateOf(false) }
+    val engines = listOf(
+        "chat" to "Lazaynova 4.5",
+        "research" to "البحث والتحليل",
+        "coding" to "البرمجة",
+        "documents" to "المستندات",
+        "image" to "الصور",
+        "video" to "الفيديو",
+        "music" to "الموسيقى",
+        "agent" to "فريق الوكلاء"
+    )
+    val label = engines.firstOrNull { it.first == selectedEngine }?.second
+        ?: "Lazaynova 4.5"
+
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+        Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Surface(
@@ -377,38 +400,73 @@ private fun Header(onMenu: () -> Unit, onCall: () -> Unit, onNewChat: () -> Unit
             border = androidx.compose.foundation.BorderStroke(1.dp, Line)
         ) {
             Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.Menu, contentDescription = "القائمة", tint = Ink)
+                Icon(Icons.Default.Menu, contentDescription = "القائمة الجانبية", tint = Ink)
             }
         }
+
         Spacer(Modifier.weight(1f))
-        LogoMark(29.dp)
-        Spacer(Modifier.width(6.dp))
-        Text("Lazaynova", color = Color(0xFF2527A6), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-        Spacer(Modifier.width(8.dp))
-        Surface(
-            onClick = onCall,
-            shape = CircleShape,
-            color = Color(0xFFF0ECFF),
-            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE4DCFF))
-        ) {
-            Box(Modifier.size(38.dp), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.Call, contentDescription = "مكالمة صوتية", tint = Violet, modifier = Modifier.size(20.dp))
+
+        Box {
+            Surface(
+                onClick = { engineMenu = true },
+                shape = RoundedCornerShape(14.dp),
+                color = Color.White,
+                border = androidx.compose.foundation.BorderStroke(1.dp, Line)
+            ) {
+                Row(
+                    Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(label, color = Color(0xFF2527A6), fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold, maxLines = 1)
+                    Text("⌄", color = Violet, fontSize = 20.sp)
+                }
+            }
+            DropdownMenu(
+                expanded = engineMenu,
+                onDismissRequest = { engineMenu = false }
+            ) {
+                engines.forEach { (id, name) ->
+                    DropdownMenuItem(
+                        text = { Text(name, color = if (id == selectedEngine) Violet else Ink) },
+                        onClick = {
+                            onEngineSelected(id)
+                            engineMenu = false
+                        }
+                    )
+                }
             }
         }
+
         Spacer(Modifier.weight(1f))
-        Surface(
-            onClick = onNewChat,
-            shape = RoundedCornerShape(13.dp),
-            color = Color.White,
-            border = androidx.compose.foundation.BorderStroke(1.dp, Line)
-        ) {
-            Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.AutoAwesome, contentDescription = "محادثة جديدة", tint = Ink, modifier = Modifier.size(20.dp))
+
+        Box {
+            Surface(
+                onClick = { moreMenu = true },
+                shape = RoundedCornerShape(13.dp),
+                color = Color.White,
+                border = androidx.compose.foundation.BorderStroke(1.dp, Line)
+            ) {
+                Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
+                    Text("⋮", color = Ink, fontSize = 25.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+            DropdownMenu(
+                expanded = moreMenu,
+                onDismissRequest = { moreMenu = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text("محادثة جديدة") },
+                    leadingIcon = { Icon(Icons.Default.AutoAwesome, contentDescription = null) },
+                    onClick = {
+                        moreMenu = false
+                        onNewChat()
+                    }
+                )
             }
         }
     }
 }
-
 @Composable
 private fun NavigationPanel(
     onClose: () -> Unit,
@@ -536,6 +594,7 @@ private fun ChatComposer(
     enabled: Boolean,
     onAdd: () -> Unit,
     onVoice: () -> Unit,
+    onCall: () -> Unit,
     onSend: () -> Unit
 ) {
     Card(
@@ -547,11 +606,11 @@ private fun ChatComposer(
     ) {
         Row(Modifier.padding(7.dp), verticalAlignment = Alignment.CenterVertically) {
             Surface(onClick = onAdd, shape = CircleShape, color = Color(0xFFF1EDFF)) {
-                Box(Modifier.size(42.dp), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Add, contentDescription = "الأدوات والإضافات", tint = Violet)
                 }
             }
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(6.dp))
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
@@ -564,15 +623,16 @@ private fun ChatComposer(
                     }
                 }
             )
-            Spacer(Modifier.width(5.dp))
-            IconButton(onClick = onVoice, enabled = enabled, modifier = Modifier.size(38.dp)) {
-                Icon(Icons.Default.Mic, contentDescription = "محادثة صوتية", tint = Violet)
+            IconButton(onClick = onVoice, enabled = enabled, modifier = Modifier.size(36.dp)) {
+                Icon(Icons.Default.Mic, contentDescription = "المحادثة الصوتية", tint = Violet)
             }
-            Spacer(Modifier.width(2.dp))
+            IconButton(onClick = onCall, enabled = enabled, modifier = Modifier.size(36.dp)) {
+                Icon(Icons.Default.Call, contentDescription = "المكالمة الصوتية", tint = Violet)
+            }
             Button(
                 enabled = enabled && value.isNotBlank(),
                 onClick = onSend,
-                modifier = Modifier.size(43.dp),
+                modifier = Modifier.size(42.dp),
                 contentPadding = PaddingValues(0.dp),
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Violet)

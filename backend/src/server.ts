@@ -50,32 +50,17 @@ async function aiGateway(
   history: Array<{ role: "user" | "assistant"; content: string }> = [],
   intent: Intent
 ) {
-  const provider = (process.env.AI_PROVIDER || "local").toLowerCase();
-  const local = provider === "local";
+  const base = (process.env.LOCAL_LLM_BASE_URL || "http://127.0.0.1:8080/v1").replace(/\/+$/, "");
+  const model = process.env.LOCAL_LLM_MODEL || "local-model";
 
-  const base = (
-    local
-      ? (process.env.LOCAL_LLM_BASE_URL || "http://127.0.0.1:8080/v1")
-      : (process.env.AI_BASE_URL || "")
-  ).replace(/\/+$/, "");
-
-  const key = local ? "" : (process.env.AI_API_KEY || "");
-  const model = local
-    ? (process.env.LOCAL_LLM_MODEL || "local-model")
-    : (process.env.AI_MODEL || "");
-
-  if (!base || !model || (!local && !key)) {
-    const e = new Error(
-      local
-        ? "Local model configuration is incomplete."
-        : "External provider requires AI_BASE_URL, AI_API_KEY and AI_MODEL."
-    ) as Error & { status?: number };
+  if (!base || !model) {
+    const e = new Error("Local model configuration is incomplete.") as Error & { status?: number };
     e.status = 503;
     throw e;
   }
 
   const controller = new AbortController();
-  const defaultTimeout = local ? 120000 : 45000;
+  const defaultTimeout = 120000;
   const timer = setTimeout(
     () => controller.abort(),
     Number(process.env.AI_TIMEOUT_MS || defaultTimeout)
@@ -85,7 +70,6 @@ async function aiGateway(
     const headers: Record<string, string> = {
       "Content-Type": "application/json"
     };
-    if (key) headers.Authorization = `Bearer ${key}`;
 
     const r = await fetch(base + "/chat/completions", {
       method: "POST",
@@ -118,7 +102,7 @@ async function aiGateway(
 
     if (!r.ok) {
       const e = new Error(
-        data.error?.message || `${provider} returned HTTP ${r.status}`
+        data.error?.message || `Local model returned HTTP ${r.status}`
       ) as Error & { status?: number };
       e.status = r.status === 400 ? 400 : 502;
       throw e;
@@ -159,10 +143,10 @@ app.post("/api/engines/:id/run", async (req: Request, res: Response, next: NextF
       const workflow = await runMultiAgent(message, language, history, (prompt, lang, turns, agent) =>
         aiGateway(prompt, lang, turns, agent)
       );
-      return res.json({ engine: getEngine(id), reply: workflow.reply, workflow: workflow.steps, provider: process.env.AI_PROVIDER || "local" });
+      return res.json({ engine: getEngine(id), reply: workflow.reply, workflow: workflow.steps, provider: "local" });
     }
     const reply = await aiGateway(message, language, history, id);
-    return res.json({ engine: getEngine(id), reply, provider: process.env.AI_PROVIDER || "local" });
+    return res.json({ engine: getEngine(id), reply, provider: "local" });
   } catch (e) { next(e); }
 });
 app.post("/api/chat", async (req: Request, res: Response, next: NextFunction) => {
@@ -180,11 +164,11 @@ app.post("/api/chat", async (req: Request, res: Response, next: NextFunction) =>
         intent,
         agent: agents.agent.name,
         workflow: workflow.steps,
-        provider: process.env.AI_PROVIDER || "local"
+        provider: "local"
       });
     }
     const reply = await aiGateway(message, language, history, intent);
-    return res.json({ reply, intent, agent: agents[intent].name, provider: process.env.AI_PROVIDER || "local" });
+    return res.json({ reply, intent, agent: agents[intent].name, provider: "local" });
   } catch (e) { next(e); }
 });
 app.use("/api/knowledge", knowledgeRouter);
