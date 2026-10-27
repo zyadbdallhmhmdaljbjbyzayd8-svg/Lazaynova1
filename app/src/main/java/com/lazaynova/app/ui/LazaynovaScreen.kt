@@ -48,14 +48,12 @@ fun LazaynovaScreen() {
     val scope = rememberCoroutineScope()
     var showTasksSheet by remember { mutableStateOf(false) }
     
-    // حالة المحادثة
     val messages = remember { mutableStateListOf<ChatMessage>() }
     var inputText by remember { mutableStateOf("") }
     var editingMessageId by remember { mutableStateOf<String?>(null) }
     var isRecording by remember { mutableStateOf(false) }
     var isCalling by remember { mutableStateOf(false) }
 
-    // منتقي الصور الحقيقي
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
