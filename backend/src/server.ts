@@ -6,7 +6,8 @@ import { z } from "zod";
 
 // Old imports
 import { knowledgeRouter } from "./knowledge-routes.js";
-import { getEngine, isEngineId, listEngines, type EngineId } from "./engines.js";
+import { listEngines } from "./engines.js";
+import { buildSpecialistRequest } from "./engine-runtime.js";
 
 // NEW IMPORTS (Golden Command #1 & #2)
 import { InternalAIGateway } from "./ai/InternalAIGateway.js";
@@ -34,47 +35,6 @@ const schema = z.object({
   })).max(20).optional()
 });
 
-type Intent = EngineId;
-
-const agents: Record<Intent, { name: string; system: string }> = {
-  chat: { name: "المنسق الذكي", system: "أنت المنسق الذكي في Lazaynova. أجب بوضوح واطلب التوضيح عند الحاجة." },
-  research: { name: "وكيل البحث", system: "أنت وكيل بحث. ميّز بين الحقائق والافتراضات، اقترح كلمات بحث دقيقة." },
-  coding: { name: "وكيل البرمجة", system: "أنت وكيل برمجة خبير. قدم كودًا عمليًا آمنًا، واشرح الملفات والتغييرات." },
-  documents: { name: "وكيل المستندات", system: "أنت وكيل مستندات. ساعد في التخطيط والكتابة والتلخيص." },
-  image: { name: "وكيل الصور", system: "أنت وكيل صور. اكتب وصفًا دقيقًا أو خطة تصميم؛ لا تدّع إنشاء صورة." },
-  video: { name: "وكيل الفيديو", system: "أنت وكيل فيديو. ساعد في السيناريو وتقسيم المشاهد وخطة الإنتاج." },
-  music: { name: "وكيل الموسيقى", system: "أنت وكيل موسيقى. ساعد في الأفكار والكلمات والوصف الموسيقي." },
-  agent: { name: "منسق الوكلاء", system: "أنت منسق مهام. قسّم المهمة إلى خطوات، ووضح ما يحتاج إلى أدوات." }
-};
-
-// LAZAYNOVA_ENGINE_ROUTING_V1
-function routeIntent(s: string): Intent {
-  const t = s.toLowerCase();
-
-  if (/\b(music|song|audio|موسيقى|اغنية|أغنية|لحن|صوت)\b/.test(t)) {
-    return "music";
-  }
-  if (/\b(video|film|movie|فيديو|فلم|مشاهد|مونتاج)\b/.test(t)) {
-    return "video";
-  }
-  if (/\b(agent|team|multi.?agent|فريق|وكلاء|نفذ المهمة|نفّذ المهمة)\b/.test(t)) {
-    return "agent";
-  }
-  if (/\b(research|بحث عميق|ابحث|مصادر|تحليل بحثي)\b/.test(t)) {
-    return "research";
-  }
-  if (/\b(code|debug|program|coding|برمج|كود|خطأ برمجي)\b/.test(t)) {
-    return "coding";
-  }
-  if (/\b(document|pdf|file|مستند|ملف|لخص الوثيقة|لخص المستند)\b/.test(t)) {
-    return "documents";
-  }
-  if (/\b(image|picture|draw|صورة|صور|ارسم|تصميم صورة)\b/.test(t)) {
-    return "image";
-  }
-  return "chat";
-}
-
 // --- ROUTES ---
 app.use("/api/knowledge", knowledgeRouter);
 
@@ -94,29 +54,17 @@ app.post("/api/chat", async (req, res) => {
       return res.json({ type: "automation", result });
     }
 
-    // Route the request to its specialist engine.
-    const engineId = routeIntent(parsed.message);
-    const specialist = agents[engineId];
-
-    const response = await gateway.chat({
-      model: "lazaynova-core",
-      messages: [
-        { role: "system", content: specialist.system },
-        ...(parsed.history ?? []).slice(-10).map((item) => ({
-          role: item.role,
-          content: item.content
-        })),
-        { role: "user", content: parsed.message }
-      ],
-      temperature: 0.3,
-      max_tokens: 700,
-      stream: false
-    });
+    // Route the request through the tested specialist runtime.
+    const routed = buildSpecialistRequest(
+      parsed.message,
+      parsed.history ?? []
+    );
+    const response = await gateway.chat(routed.request);
 
     res.json({
       type: "chat",
-      intent: engineId,
-      engine: specialist.name,
+      intent: routed.engineId,
+      engine: routed.engineName,
       response
     });
   } catch (err) {
