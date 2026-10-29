@@ -47,12 +47,31 @@ const agents: Record<Intent, { name: string; system: string }> = {
   agent: { name: "منسق الوكلاء", system: "أنت منسق مهام. قسّم المهمة إلى خطوات، ووضح ما يحتاج إلى أدوات." }
 };
 
+// LAZAYNOVA_ENGINE_ROUTING_V1
 function routeIntent(s: string): Intent {
   const t = s.toLowerCase();
-  if (/code|debug|program|برمج|كود/.test(t)) return "coding";
-  if (/research|بحث عميق|ابحث|مصادر/.test(t)) return "research";
-  if (/document|pdf|file|مستند|ملف/.test(t)) return "documents";
-  if (/image|picture|صورة|صور|ارسم/.test(t)) return "image";
+
+  if (/\b(music|song|audio|موسيقى|اغنية|أغنية|لحن|صوت)\b/.test(t)) {
+    return "music";
+  }
+  if (/\b(video|film|movie|فيديو|فلم|مشاهد|مونتاج)\b/.test(t)) {
+    return "video";
+  }
+  if (/\b(agent|team|multi.?agent|فريق|وكلاء|نفذ المهمة|نفّذ المهمة)\b/.test(t)) {
+    return "agent";
+  }
+  if (/\b(research|بحث عميق|ابحث|مصادر|تحليل بحثي)\b/.test(t)) {
+    return "research";
+  }
+  if (/\b(code|debug|program|coding|برمج|كود|خطأ برمجي)\b/.test(t)) {
+    return "coding";
+  }
+  if (/\b(document|pdf|file|مستند|ملف|لخص الوثيقة|لخص المستند)\b/.test(t)) {
+    return "documents";
+  }
+  if (/\b(image|picture|draw|صورة|صور|ارسم|تصميم صورة)\b/.test(t)) {
+    return "image";
+  }
   return "chat";
 }
 
@@ -75,16 +94,31 @@ app.post("/api/chat", async (req, res) => {
       return res.json({ type: "automation", result });
     }
 
-    // Use Local Gateway for direct chat
+    // Route the request to its specialist engine.
+    const engineId = routeIntent(parsed.message);
+    const specialist = agents[engineId];
+
     const response = await gateway.chat({
       model: "lazaynova-core",
       messages: [
-        { role: "system", content: "أنت مساعد Lazaynova الذكي." },
+        { role: "system", content: specialist.system },
+        ...(parsed.history ?? []).slice(-10).map((item) => ({
+          role: item.role,
+          content: item.content
+        })),
         { role: "user", content: parsed.message }
-      ]
+      ],
+      temperature: 0.3,
+      max_tokens: 700,
+      stream: false
     });
 
-    res.json({ type: "chat", intent: intentKind, response });
+    res.json({
+      type: "chat",
+      intent: engineId,
+      engine: specialist.name,
+      response
+    });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
