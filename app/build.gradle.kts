@@ -12,7 +12,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1.0"
-        val apiBase = project.findProperty("API_BASE_URL")?.toString() ?: "http://10.0.2.2:8787"
+        val apiBase = project.findProperty("API_BASE_URL")?.toString() ?: "http://127.0.0.1:8787"
         buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
     }
     buildFeatures { compose = true; buildConfig = true }
