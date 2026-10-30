@@ -51,7 +51,7 @@ async function aiGateway(
   intent: Intent
 ) {
   const base = (process.env.LOCAL_LLM_BASE_URL || "http://127.0.0.1:8080/v1").replace(/\/+$/, "");
-  const model = process.env.LOCAL_LLM_MODEL || "local-model";
+  const model = process.env.LOCAL_LLM_MODEL || "lazaynova-core";
 
   if (!base || !model) {
     const e = new Error("Local model configuration is incomplete.") as Error & { status?: number };
