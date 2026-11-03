@@ -1,0 +1,283 @@
+LAZAYNOVA BRANCH MIGRATION REPORT
+Date: 2026-11-03T16:19:24+03:00
+
+========== android/chat-viewmodel ==========
+56f722e Fix local model defaults for Lazaynova
+af6a40d fix(android): connect app to local Termux server
+533baf8 Merge pull request #2 from zyadbdallhmhmdaljbjbyzayd8-svg/feat/internal-ai-gateway
+6cc7c87 feat(ai): add InternalAIGateway with local-only policy
+8a5441c Connect Lazaynova chat to selected engines
+1d2c6d8 Fix Android SDK setup in APK workflow
+f8bba42 Add automated Android APK build
+74e4165 Redesign Lazaynova Android chat home and tools menu
+5bb642e fix(android): resolve responsive navigation width
+f6e6b5b feat(android): redesign Lazaynova app interface
+e3760e3 ci(android): update Android SDK setup action
+071de65 ci(android): install Android SDK before building APK
+929aea7 Add Lazaynova model foundation
+
+ .github/workflows/android-apk.yml                  |  55 ++
+ .github/workflows/android-build.yml                |   4 +
+ .gitignore                                         |  12 +-
+ app/build.gradle.kts                               |   2 +-
+ app/src/main/java/com/lazaynova/app/ApiClient.kt   | 110 ++-
+ .../main/java/com/lazaynova/app/MainActivity.kt    | 877 ++++++++++++---------
+ backend/.env.example                               |  22 +-
+ backend/src/ai/InternalAIGateway.ts                |  87 ++
+ backend/src/ai/url-policy.ts                       |  53 ++
+ backend/src/reasoning.ts                           |   2 +-
+ backend/src/server.ts                              |  36 +-
+ backend/src/server.ts.backup-20261022-152433       | 129 ---
+ model/.gitignore                                   |   4 +
+ model/README.md                                    |  25 +
+ model/config.json                                  |  13 +
+ model/data/train.txt                               |   9 +
+ model/requirements.txt                             |   1 +
+ model/train.py                                     | 189 +++++
+ scripts/audit-no-external-apis.sh                  |  75 ++
+ scripts/lzsave.sh                                  |  50 ++
+ 20 files changed, 1198 insertions(+), 557 deletions(-)
+
+A	.github/workflows/android-apk.yml
+M	.github/workflows/android-build.yml
+M	.gitignore
+M	app/build.gradle.kts
+M	app/src/main/java/com/lazaynova/app/ApiClient.kt
+M	app/src/main/java/com/lazaynova/app/MainActivity.kt
+M	backend/.env.example
+A	backend/src/ai/InternalAIGateway.ts
+A	backend/src/ai/url-policy.ts
+M	backend/src/reasoning.ts
+M	backend/src/server.ts
+D	backend/src/server.ts.backup-20261022-152433
+A	model/.gitignore
+A	model/README.md
+A	model/config.json
+A	model/data/train.txt
+A	model/requirements.txt
+A	model/train.py
+A	scripts/audit-no-external-apis.sh
+A	scripts/lzsave.sh
+
+========== feat/intent-router-orchestrator ==========
+f21e588 Merge and resolve conflicts in server.ts
+05399d1 feat(ai): add IntentRouter + 4-stage AgentOrchestrator
+6cc7c87 feat(ai): add InternalAIGateway with local-only policy
+8a5441c Connect Lazaynova chat to selected engines
+1d2c6d8 Fix Android SDK setup in APK workflow
+f8bba42 Add automated Android APK build
+74e4165 Redesign Lazaynova Android chat home and tools menu
+5bb642e fix(android): resolve responsive navigation width
+f6e6b5b feat(android): redesign Lazaynova app interface
+e3760e3 ci(android): update Android SDK setup action
+071de65 ci(android): install Android SDK before building APK
+929aea7 Add Lazaynova model foundation
+
+ .github/workflows/android-apk.yml                  |  55 ++
+ .github/workflows/android-build.yml                |   4 +
+ .gitignore                                         |  12 +-
+ app/src/main/java/com/lazaynova/app/ApiClient.kt   | 110 ++-
+ .../main/java/com/lazaynova/app/MainActivity.kt    | 877 ++++++++++++---------
+ backend/.env.example                               |  22 +-
+ backend/package.json                               |   2 +-
+ backend/src/ai/AgentOrchestrator.test.ts           |  71 ++
+ backend/src/ai/AgentOrchestrator.ts                | 151 ++++
+ backend/src/ai/IntentRouter.test.ts                |  40 +
+ backend/src/ai/IntentRouter.ts                     |  73 ++
+ backend/src/ai/InternalAIGateway.ts                |  87 ++
+ backend/src/ai/types.ts                            |  39 +
+ backend/src/ai/url-policy.ts                       |  53 ++
+ backend/src/server.ts                              | 201 ++---
+ backend/src/server.ts.backup-20261022-152433       | 129 ---
+ model/.gitignore                                   |   4 +
+ model/README.md                                    |  25 +
+ model/config.json                                  |  13 +
+ model/data/train.txt                               |   9 +
+ model/requirements.txt                             |   1 +
+ model/train.py                                     | 189 +++++
+ scripts/audit-no-external-apis.sh                  |  75 ++
+ scripts/lzsave.sh                                  |  50 ++
+ 24 files changed, 1612 insertions(+), 680 deletions(-)
+
+A	.github/workflows/android-apk.yml
+M	.github/workflows/android-build.yml
+M	.gitignore
+M	app/src/main/java/com/lazaynova/app/ApiClient.kt
+M	app/src/main/java/com/lazaynova/app/MainActivity.kt
+M	backend/.env.example
+M	backend/package.json
+A	backend/src/ai/AgentOrchestrator.test.ts
+A	backend/src/ai/AgentOrchestrator.ts
+A	backend/src/ai/IntentRouter.test.ts
+A	backend/src/ai/IntentRouter.ts
+A	backend/src/ai/InternalAIGateway.ts
+A	backend/src/ai/types.ts
+A	backend/src/ai/url-policy.ts
+M	backend/src/server.ts
+D	backend/src/server.ts.backup-20261022-152433
+A	model/.gitignore
+A	model/README.md
+A	model/config.json
+A	model/data/train.txt
+A	model/requirements.txt
+A	model/train.py
+A	scripts/audit-no-external-apis.sh
+A	scripts/lzsave.sh
+
+========== feat/internal-ai-gateway ==========
+6cc7c87 feat(ai): add InternalAIGateway with local-only policy
+8a5441c Connect Lazaynova chat to selected engines
+1d2c6d8 Fix Android SDK setup in APK workflow
+f8bba42 Add automated Android APK build
+74e4165 Redesign Lazaynova Android chat home and tools menu
+5bb642e fix(android): resolve responsive navigation width
+f6e6b5b feat(android): redesign Lazaynova app interface
+e3760e3 ci(android): update Android SDK setup action
+071de65 ci(android): install Android SDK before building APK
+929aea7 Add Lazaynova model foundation
+
+ .github/workflows/android-apk.yml                  |  55 ++
+ .github/workflows/android-build.yml                |   4 +
+ .gitignore                                         |  12 +-
+ app/src/main/java/com/lazaynova/app/ApiClient.kt   | 110 ++-
+ .../main/java/com/lazaynova/app/MainActivity.kt    | 877 ++++++++++++---------
+ backend/.env.example                               |  22 +-
+ backend/src/ai/InternalAIGateway.ts                |  87 ++
+ backend/src/ai/url-policy.ts                       |  53 ++
+ backend/src/server.ts                              |  36 +-
+ backend/src/server.ts.backup-20261022-152433       | 129 ---
+ model/.gitignore                                   |   4 +
+ model/README.md                                    |  25 +
+ model/config.json                                  |  13 +
+ model/data/train.txt                               |   9 +
+ model/requirements.txt                             |   1 +
+ model/train.py                                     | 189 +++++
+ scripts/audit-no-external-apis.sh                  |  75 ++
+ scripts/lzsave.sh                                  |  50 ++
+ 18 files changed, 1196 insertions(+), 555 deletions(-)
+
+A	.github/workflows/android-apk.yml
+M	.github/workflows/android-build.yml
+M	.gitignore
+M	app/src/main/java/com/lazaynova/app/ApiClient.kt
+M	app/src/main/java/com/lazaynova/app/MainActivity.kt
+M	backend/.env.example
+A	backend/src/ai/InternalAIGateway.ts
+A	backend/src/ai/url-policy.ts
+M	backend/src/server.ts
+D	backend/src/server.ts.backup-20261022-152433
+A	model/.gitignore
+A	model/README.md
+A	model/config.json
+A	model/data/train.txt
+A	model/requirements.txt
+A	model/train.py
+A	scripts/audit-no-external-apis.sh
+A	scripts/lzsave.sh
+
+========== feat/private-storage-jwt ==========
+58ed8df Add tested specialist engine runtime
+4192138 Activate specialist engine routing
+f703e63 Fix local model defaults and add local runtime
+cfa942b fix(android): clean rewrite of functional UI
+2aa2a9d feat(android): fully functional UI with image picker, edit, delete, and mic/call toggles
+03813e3 feat(android): apply unified sidebar, tasks sheet, google login, and fixed bottom bar
+926ea55 feat(android): apply new light theme MVVM UI with all layers
+c10b549 feat(android): replace old dark UI with new light MVVM Compose UI (Golden Command #4)
+f21e588 Merge and resolve conflicts in server.ts
+05399d1 feat(ai): add IntentRouter + 4-stage AgentOrchestrator
+6cc7c87 feat(ai): add InternalAIGateway with local-only policy
+8a5441c Connect Lazaynova chat to selected engines
+1d2c6d8 Fix Android SDK setup in APK workflow
+f8bba42 Add automated Android APK build
+74e4165 Redesign Lazaynova Android chat home and tools menu
+5bb642e fix(android): resolve responsive navigation width
+f6e6b5b feat(android): redesign Lazaynova app interface
+e3760e3 ci(android): update Android SDK setup action
+071de65 ci(android): install Android SDK before building APK
+929aea7 Add Lazaynova model foundation
+
+ .github/workflows/android-apk.yml                  |  55 +++
+ .github/workflows/android-build.yml                |   4 +
+ .gitignore                                         |  12 +-
+ app/build.gradle.kts                               |   3 +-
+ app/src/main/AndroidManifest.xml                   |   4 +
+ app/src/main/java/com/lazaynova/app/ApiClient.kt   | 110 ++++-
+ .../main/java/com/lazaynova/app/MainActivity.kt    | 488 +--------------------
+ .../java/com/lazaynova/app/ui/LazaynovaScreen.kt   | 336 ++++++++++++++
+ .../main/java/com/lazaynova/app/ui/theme/Theme.kt  |  33 ++
+ app/src/main/res/drawable/lazaynova_logo.png       | Bin 0 -> 68 bytes
+ backend/.env.example                               |  22 +-
+ backend/package-lock.json                          | 162 ++++++-
+ backend/package.json                               |   5 +-
+ backend/src/ai/AgentOrchestrator.test.ts           |  71 +++
+ backend/src/ai/AgentOrchestrator.ts                | 151 +++++++
+ backend/src/ai/IntentRouter.test.ts                |  40 ++
+ backend/src/ai/IntentRouter.ts                     |  73 +++
+ backend/src/ai/InternalAIGateway.ts                |  87 ++++
+ backend/src/ai/types.ts                            |  39 ++
+ backend/src/ai/url-policy.ts                       |  53 +++
+ backend/src/engine-runtime.test.ts                 |  56 +++
+ backend/src/engine-runtime.ts                      | 129 ++++++
+ backend/src/reasoning.ts                           |   2 +-
+ backend/src/server.ts                              | 211 ++-------
+ backend/src/server.ts.backup-20261022-152433       | 129 ------
+ model/.gitignore                                   |   4 +
+ model/LOCAL_RUNTIME.md                             |  42 ++
+ model/README.md                                    |  25 ++
+ model/config.json                                  |  13 +
+ model/data/train.txt                               |   9 +
+ model/requirements.txt                             |   1 +
+ model/serve.py                                     |  92 ++++
+ model/test_serve.py                                |  14 +
+ model/train.py                                     | 189 ++++++++
+ payload/model/README.md                            |  42 ++
+ payload/model/serve.py                             |  92 ++++
+ payload/model/test_serve.py                        |  14 +
+ scripts/apply-local-runtime.sh                     |  15 +
+ scripts/audit-no-external-apis.sh                  |  75 ++++
+ scripts/build-engine-core.sh                       | 134 ++++++
+ scripts/lzsave.sh                                  |  50 +++
+ 41 files changed, 2273 insertions(+), 813 deletions(-)
+
+A	.github/workflows/android-apk.yml
+M	.github/workflows/android-build.yml
+M	.gitignore
+M	app/build.gradle.kts
+M	app/src/main/AndroidManifest.xml
+M	app/src/main/java/com/lazaynova/app/ApiClient.kt
+M	app/src/main/java/com/lazaynova/app/MainActivity.kt
+A	app/src/main/java/com/lazaynova/app/ui/LazaynovaScreen.kt
+A	app/src/main/java/com/lazaynova/app/ui/theme/Theme.kt
+A	app/src/main/res/drawable/lazaynova_logo.png
+M	backend/.env.example
+M	backend/package-lock.json
+M	backend/package.json
+A	backend/src/ai/AgentOrchestrator.test.ts
+A	backend/src/ai/AgentOrchestrator.ts
+A	backend/src/ai/IntentRouter.test.ts
+A	backend/src/ai/IntentRouter.ts
+A	backend/src/ai/InternalAIGateway.ts
+A	backend/src/ai/types.ts
+A	backend/src/ai/url-policy.ts
+A	backend/src/engine-runtime.test.ts
+A	backend/src/engine-runtime.ts
+M	backend/src/reasoning.ts
+M	backend/src/server.ts
+D	backend/src/server.ts.backup-20261022-152433
+A	model/.gitignore
+A	model/LOCAL_RUNTIME.md
+A	model/README.md
+A	model/config.json
+A	model/data/train.txt
+A	model/requirements.txt
+A	model/serve.py
+A	model/test_serve.py
+A	model/train.py
+A	payload/model/README.md
+A	payload/model/serve.py
+A	payload/model/test_serve.py
+A	scripts/apply-local-runtime.sh
+A	scripts/audit-no-external-apis.sh
+A	scripts/build-engine-core.sh
+A	scripts/lzsave.sh
