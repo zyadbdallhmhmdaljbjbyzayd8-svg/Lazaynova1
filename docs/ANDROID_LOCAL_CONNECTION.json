@@ -1,0 +1,8 @@
+{
+  "android_emulator_gateway": "http://10.0.2.2:8787",
+  "termux_on_device": "http://127.0.0.1:8787",
+  "openai_compatible_chat": "/v1/chat/completions",
+  "models": "/v1/models",
+  "health_check": "/health",
+  "note": "10.0.2.2 is for Android Emulator to host access; Termux on the same phone uses 127.0.0.1."
+}

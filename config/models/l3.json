@@ -1,0 +1,18 @@
+{
+  "model_name": "LAZAYNOVA L3",
+  "version": "native-scratch-v1",
+  "architecture": "decoder_only_transformer",
+  "vocab_size": 260,
+  "d_model": 128,
+  "n_heads": 4,
+  "n_layers": 2,
+  "ff_dim": 256,
+  "context_length": 128,
+  "dropout": 0.0,
+  "precision": "float32",
+  "device": "cpu",
+  "initialization": "random",
+  "tokenizer": "native_utf8_byte",
+  "external_weights": false,
+  "external_ai_apis": false
+}
