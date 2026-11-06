@@ -1,0 +1,21 @@
+flowchart TD
+    A[Android Application] --> B[Backend API]
+    B --> C[Existing Coordinator]
+    C --> D[Advanced Task Engine]
+    D --> E[Task Intake]
+    E --> F[Classifier]
+    F --> G[Planner and Decomposer]
+    G --> H[Dependency Manager]
+    H --> I[Resource Estimator]
+    I --> J[Approval Gate]
+    J --> K[Execution Scheduler]
+    K --> L[Agent Executor]
+    L --> M[Existing Model Selector]
+    L --> N[Existing Tool Registry]
+    L --> O[Knowledge Connector]
+    M --> P[Result Verifier]
+    N --> P
+    O --> P
+    P --> Q[Report Generator]
+    Q --> R[Task History]
+    R --> C
