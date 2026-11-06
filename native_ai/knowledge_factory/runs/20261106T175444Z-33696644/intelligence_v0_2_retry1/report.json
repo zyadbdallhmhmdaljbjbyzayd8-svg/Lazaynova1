@@ -1,0 +1,26 @@
+{
+  "engine": "LAZAYNOVA Knowledge Intelligence",
+  "version": "0.2.0",
+  "created_at": "2026-11-06T18:04:57.362849+00:00",
+  "import_run": "20261106T175444Z-33696644",
+  "input_chunks": 1,
+  "sentences_seen": 4,
+  "knowledge_units_added": 4,
+  "code_symbols_added": 0,
+  "definition_questions_added": 2,
+  "knowledge_units": 4,
+  "definition_questions": 2,
+  "code_symbols": 0,
+  "deduplication": "sqlite_content_hash",
+  "source_references_preserved": true,
+  "external_ai_apis_used": false,
+  "external_model_weights_used": false,
+  "model_training_performed": false,
+  "source_data_modified": false,
+  "outputs": [
+    "knowledge_units.jsonl",
+    "question_bank.jsonl",
+    "code_symbols.jsonl",
+    "dedup_index.sqlite3"
+  ]
+}
