@@ -1,0 +1,16 @@
+{
+  "engine": "LAZAYNOVA Knowledge Intelligence Engine",
+  "version": "0.1.0",
+  "created_at": "2026-11-06T17:58:23.568917+00:00",
+  "import_run": "20261106T175444Z-33696644",
+  "input_chunks": 1,
+  "knowledge_units": 5,
+  "definition_questions": 4,
+  "unsupported_answers_generated": 0,
+  "model_training_performed": false,
+  "source_data_modified": false,
+  "outputs": [
+    "knowledge_units.jsonl",
+    "question_bank.jsonl"
+  ]
+}
