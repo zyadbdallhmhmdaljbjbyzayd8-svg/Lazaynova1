@@ -20,4 +20,8 @@ class ChatRepository {
     ): String {
         return ApiClient.authenticate(username, password, register)
     }
+
+    suspend fun getConversationMessages(conversationId: String): List<ChatMessage> {
+        return ApiClient.getConversationMessages(conversationId)
+    }
 }

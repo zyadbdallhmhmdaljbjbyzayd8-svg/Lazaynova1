@@ -53,6 +53,7 @@ class ChatViewModel(
                         error = null
                     )
                 }
+                restoreConversationHistory()
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
@@ -60,6 +61,39 @@ class ChatViewModel(
                         isAuthenticated = false,
                         authError = e.message ?: "تعذر تسجيل الدخول."
                     )
+                }
+            }
+        }
+    }
+
+
+    private fun restoreConversationHistory() {
+        val conversationId = _uiState.value.conversationId ?: return
+        val requestGeneration = conversationGeneration
+        _uiState.update { it.copy(isBusy = true, error = null) }
+
+        viewModelScope.launch {
+            try {
+                val history = repository.getConversationMessages(conversationId)
+                if (requestGeneration != conversationGeneration) return@launch
+
+                _uiState.update { latest ->
+                    if (requestGeneration != conversationGeneration) {
+                        latest
+                    } else {
+                        if (history.isNotEmpty()) {
+                            nextMessageId = (history.maxOfOrNull { it.id } ?: 0L) + 1L
+                        }
+                        latest.copy(
+                            messages = if (history.isNotEmpty()) history else latest.messages,
+                            isBusy = false,
+                            error = null
+                        )
+                    }
+                }
+            } catch (_: Exception) {
+                if (requestGeneration == conversationGeneration) {
+                    _uiState.update { it.copy(isBusy = false) }
                 }
             }
         }

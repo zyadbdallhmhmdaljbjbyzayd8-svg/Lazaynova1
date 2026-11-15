@@ -5,7 +5,7 @@ plugins {
 }
 android {
     namespace = "com.lazaynova.app"
-    compileSdk = 35
+    compileSdk = 34
     defaultConfig {
         applicationId = "com.lazaynova.app"
         minSdk = 26
@@ -30,5 +30,6 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     debugImplementation("androidx.compose.ui:ui-tooling")
 }
