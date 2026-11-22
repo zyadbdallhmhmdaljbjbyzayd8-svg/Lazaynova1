@@ -26,7 +26,7 @@ export interface GatewayPort {
 function localBaseUrl(): string {
   const configured =
     process.env.COORDINATOR_GATEWAY_URL
-    || "http://127.0.0.1:8787";
+    || "http://127.0.0.1:8788";
 
   let url: URL;
 
@@ -126,7 +126,7 @@ export class LocalGatewayDispatcher implements GatewayPort {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              model: "LAZAYNOVA-L3-native-v2",
+              model: "LAZAYNOVA-L3-native-v3",
               messages: [{ role: "user", content: prompt }],
               temperature: 0,
               max_tokens: maxTokens,
@@ -165,7 +165,7 @@ export class LocalGatewayDispatcher implements GatewayPort {
         }
 
         return {
-          model: "LAZAYNOVA-L3-native-v2",
+          model: "LAZAYNOVA-L3-native-v3",
           answer
         };
       } catch (error) {
