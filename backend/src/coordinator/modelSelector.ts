@@ -6,14 +6,14 @@ export type GatewayModelStatus = {
 };
 
 export type SelectedModel = {
-  id: "LAZAYNOVA-L3-native-v2";
+  id: "LAZAYNOVA-L3-native-v3";
   engine: "L3";
-  status: "READY_NATIVE_SCRATCH_V2";
+  status: "READY_NATIVE_SCRATCH_V3";
 };
 
 export class ModelSelector {
   select(status: GatewayModelStatus): SelectedModel {
-    if (status.native_l3 !== "READY_NATIVE_SCRATCH_V2") {
+    if (status.native_l3 !== "READY_NATIVE_SCRATCH_V3") {
       throw new CoordinatorError(
         `Native L3 is not ready; gateway status: ${status.native_l3 ?? "UNKNOWN"}`,
         "MODEL_NOT_READY",
@@ -22,9 +22,9 @@ export class ModelSelector {
     }
 
     return {
-      id: "LAZAYNOVA-L3-native-v2",
+      id: "LAZAYNOVA-L3-native-v3",
       engine: "L3",
-      status: "READY_NATIVE_SCRATCH_V2"
+      status: "READY_NATIVE_SCRATCH_V3"
     };
   }
 }
