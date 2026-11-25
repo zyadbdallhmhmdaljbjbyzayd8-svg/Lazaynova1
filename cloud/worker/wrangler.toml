@@ -1,0 +1,8 @@
+name = "lazaynova-ai-api"
+main = "src/index.ts"
+compatibility_date = "2026-11-25"
+
+[vars]
+AI_BASE_URL = "https://api.example.com/v1"
+AI_MODEL = "YOUR_MODEL_NAME"
+ALLOWED_ORIGIN = "https://YOUR-FRONTEND.pages.dev"
