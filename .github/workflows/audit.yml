@@ -1,0 +1,26 @@
+name: lazaynova-audit
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Structure and weights scan
+        run: |
+          git log -1 --oneline
+          ls -d app backend lz_core model native_ai external_models tests tools 2>&1
+          echo "--- weight-like files tracked:"
+          git ls-files | grep -Ei '\.(pt|pth|bin|safetensors|ckpt|gguf|onnx)$' || echo none
+      - uses: actions/setup-node@v4
+        if: hashFiles('backend/package.json') != ''
+        with: { node-version: 20 }
+      - name: Backend typecheck and tests
+        if: hashFiles('backend/package.json') != ''
+        working-directory: backend
+        run: |
+          npm ci
+          npx tsc --noEmit || true
+          npm test --if-present || true
