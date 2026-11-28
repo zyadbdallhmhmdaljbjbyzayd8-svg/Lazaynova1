@@ -36,14 +36,15 @@
 
 ## 7. المستودعات التي تم فحصها
 - `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1.git` (محلي وبعيد — فرع `main`).
-- `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-datasets.git` (موجود على GitHub).
+- `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-datasets.git` (محلي في `$HOME/lazaynova_repos/Lazaynova1-datasets` وبعيد — `15f550c` على `main`).
 - `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-models.git` (محلي وبعيد — `047b73d` على `main`).
 
 ## 8. الملفات التي تم رفعها
 - تم رفع تحديثات البوابة والسجل و`render.yaml` و`scripts/prepare_split_plan.py` و`docs/SPLIT_MODELS_DATASETS_PLAN_AR.md` إلى `origin/main`، وجارٍ رفع دعم `LAZAYNOVA_DATASETS_DIR` وتحديث السجل.
 
 ## 9. Commit SHA لكل رفع
-- `Lazaynova1` (`origin/main`): `b59317c138fcb09e3e5ca57224631f948844cdc1` (الرفع السابق المؤكد؛ سيتم تحديثه بعد هذا الرفع).
+- `Lazaynova1` (`origin/main`): `4469e4ff5949bde9b759670cc85f5b08f10fc28d` (مؤكد).
+- `Lazaynova1-datasets` (`origin/main`): `15f550c` (مؤكد — فرع main مهيأ ومرفوع).
 
 ## 10. الخدمات السحابية التي تم نشرها
 - [NOT STARTED] تم تجهيز `render.yaml` وفحص `/health` و`DATABASE_URL`؛ بانتظار ضبط المتغيرات في لوحة Render وربط Supabase والتحقق من الرابط المباشر.
