@@ -44,7 +44,8 @@
 
 ## 9. Commit SHA لكل رفع
 - `Lazaynova1` (`origin/main`): `4469e4ff5949bde9b759670cc85f5b08f10fc28d` (مؤكد).
-- `Lazaynova1-datasets` (`origin/main`): `15f550c` (مؤكد — فرع main مهيأ ومرفوع).
+- `Lazaynova1-datasets` (`origin/main`): `845f6765a9be269f7e60acc72afe56b2969f437a` (مؤكد — رُفعت ملفات sample_ar v1/v2/v3 jsonl).
+- `Lazaynova1-models`: commit محلي `04e452c` جاهز؛ توقف رفع LFS عند 50% (2/4) بسبب خطأ DNS (`no such host` لـ `github-cloud.s3.amazonaws.com`).
 
 ## 10. الخدمات السحابية التي تم نشرها
 - [NOT STARTED] تم تجهيز `render.yaml` وفحص `/health` و`DATABASE_URL`؛ بانتظار ضبط المتغيرات في لوحة Render وربط Supabase والتحقق من الرابط المباشر.
