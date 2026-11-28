@@ -20,7 +20,8 @@ sys.path.insert(0, str(ROOT))
 from modules.native_models.l3.model import LazaynovaL3
 from modules.native_models.l3.tokenizer import ByteTokenizer
 
-DATA_PATH = ROOT / "native_ai/datasets/sample_ar_v3.jsonl"
+DATASETS_DIR = Path(os.environ.get("LAZAYNOVA_DATASETS_DIR", str(ROOT / "native_ai/datasets")))
+DATA_PATH = DATASETS_DIR / "sample_ar_v3.jsonl"
 CONFIG_PATH = ROOT / "config/models/l3.json"
 OUTPUT_PATH = ROOT / "native_ai/checkpoints/l3_checkpoint_v3.pt"
 

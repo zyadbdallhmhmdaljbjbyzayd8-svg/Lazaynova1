@@ -35,7 +35,8 @@ def load_records(path):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--data", default=str(ROOT/"native_ai/datasets/sample_ar_v2.jsonl"))
+    DATASETS_DIR = Path(os.environ.get("LAZAYNOVA_DATASETS_DIR", str(ROOT / "native_ai/datasets")))
+    p.add_argument("--data", default=str(DATASETS_DIR / "sample_ar_v2.jsonl"))
     p.add_argument("--config", default=str(ROOT/"config/models/l3.json"))
     p.add_argument("--steps", type=int, default=300)
     p.add_argument("--batch-size", type=int, default=1)

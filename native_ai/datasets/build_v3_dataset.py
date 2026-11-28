@@ -10,9 +10,10 @@ import hashlib
 from pathlib import Path
 
 
-OUTPUT = Path(
-    "native_ai/datasets/sample_ar_v3.jsonl"
+DATASETS_DIR = Path(
+    os.environ.get("LAZAYNOVA_DATASETS_DIR", "native_ai/datasets")
 )
+OUTPUT = DATASETS_DIR / "sample_ar_v3.jsonl"
 
 
 # Each row is an independently authored prompt and response.
