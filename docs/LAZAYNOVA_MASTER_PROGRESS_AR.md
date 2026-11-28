@@ -65,3 +65,7 @@
 
 - [DONE] تنفيذ هجرة قاعدة البيانات `001_auth` (`users` و`refresh_sessions`) بنجاح على Supabase (`Database migration 001_auth completed.`).
 - [DONE] التحقق الكامل من بنية backend/src وrender.yaml وpackage.json وتحديث سجل التقدم النهائي دفعة واحدة.
+- [DONE] تنفيذ هجرة قاعدة البيانات `001_auth` (`users` و`refresh_sessions`) بنجاح على Supabase.
+- [DONE] حصر متغيرات البيئة في `backend/src` ومراجعة `render.yaml` (`lazaynova-backend-api`, `buildCommand: npm ci && npm run build`, `startCommand: npm start`, `healthCheckPath: /health`) و`backend/package.json`.
+- [DONE] إزالة ملفات `__pycache__/*.pyc` المتعقّبة من فهرس Git وتأكيد نجاح `pytest` (68 passed) و`npm run build` عند Commit `945a5d6`.
+- [DONE] التحقق المباشر من `dist/server.js` على المنفذ المحلي: `/health` أعاد `200 OK` (`version: 1.1.0`) و`/api/engines` أعاد `200 OK` مع المحركات الثمانية (`chat`, `research`, `coding`, `documents`, `image`, `video`, `music`, `agent`).
