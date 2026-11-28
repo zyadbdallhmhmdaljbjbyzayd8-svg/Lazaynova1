@@ -3,8 +3,9 @@
 ## 1. ما تم إنجازه
 - [IMPLEMENTED] إعداد بنية الخلفية السحابية والهجرات والمصادقة في commit محلي `22c0cc5` (`Prepare LAZAYNOVA cloud backend`).
 - [IMPLEMENTED] إضافة دالة `route_request` إلى `InternalAIGateway` في `lz_core/ai_gateway/gateway.py` بعد أخذ نسخة احتياطية.
-- [VERIFIED] دمج `origin/main` (`463b7bd`) في فرع `main` محلياً عبر `4912653` ورفع التغييرات إلى `origin/main` في commit `ee6fe99772943a731dc2fe81cbe5ebfdf09b0200` مع تطابق الـ SHA (`SHA_MATCH_OK`).
+- [VERIFIED] دمج `origin/main` (`463b7bd`) في فرع `main` محلياً عبر `4912653` ورفع التغييرات إلى `origin/main` في commit `ee6fe99772943a731dc2fe81cbe5ebfdf09b0200` ثم commit `69f46a0e7bc45d766e2683698a8e5ebeef1647f3` مع تطابق الـ SHA (`SHA_MATCH_OK`).
 - [IMPLEMENTED] إنشاء ملف إعداد استضافة `backend` على Render (`render.yaml`) وسكربت الفحص الآمن `scripts/prepare_split_plan.py` وتوليد خطة الفصل `docs/SPLIT_MODELS_DATASETS_PLAN_AR.md` دون لمس الأوزان أو نقاط التفتيش.
+- [VERIFIED] فحص `backend/src/server.ts` و`backend/src/database.ts` وتأكيد وجود مسار `/health` واعتماد `DATABASE_URL` عبر متغيرات البيئة.
 
 ## 2. الملفات الموجودة (حسب الفحص الحالي)
 - `Lazaynova1`: تطبيق Android (`app/...`)، الخلفية والمنسق (`backend/...`, `lz_core/...`, `app.js`, `cloud/worker/...`, `render.yaml`)، وحدات الذكاء الاصطناعي والبيانات المحلية (`native_ai/...`, `model/lzcore/...`)، السكربتات (`scripts/prepare_split_plan.py`)، والاختبارات (`tests/...`).
@@ -25,7 +26,7 @@
 
 ## 5. الاختبارات الناجحة
 - [TESTED] `PYTHONPATH=. pytest -q tests` بعد الدمج: **68 passed in 46.72s**.
-- [TESTED] `backend` (`npm run build` / `tsc -p tsconfig.json`): نجح بدون أخطاء.
+- [TESTED] `backend` (`npm run build` / `tsc -p tsconfig.json`) بعد الدمج: نجح بدون أخطاء.
 - [TESTED] `python3 scripts/prepare_split_plan.py`: نجح وحدد ملفات النماذج (`*.pt`, `*.gguf`) وملفات البيانات (`*.jsonl`) ومواضع الاستدعاء في الكود.
 
 ## 6. المشاكل المعروفة
@@ -34,29 +35,29 @@
 - [BLOCKED] مستودع `Lazaynova1-datasets` غير ظاهر على `origin` عبر `git ls-remote` ومفقود محلياً.
 
 ## 7. المستودعات التي تم فحصها
-- `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1.git` (محلي وبعيد — مرفوع ومطابق على `ee6fe99772943a731dc2fe81cbe5ebfdf09b0200`؛ توجد ملفات جاهزية جديدة غير مرفوعة بعد).
+- `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1.git` (محلي وبعيد — مرفوع ومطابق على `69f46a0e7bc45d766e2683698a8e5ebeef1647f3`؛ يوجد تحديث توثيقي محلي في السجل).
 - `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-datasets.git` (تم الفحص عبر `git ls-remote` — لم تُرجع مراجع).
 - `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-models.git` (محلي وبعيد — `047b73d` على `main`).
 
 ## 8. الملفات التي تم رفعها
-- تم رفع 28 ملفاً ضمن commit `ee6fe99772943a731dc2fe81cbe5ebfdf09b0200` إلى `origin/main`؛ وتم إنشاء `render.yaml` و`scripts/prepare_split_plan.py` وتوليد `docs/SPLIT_MODELS_DATASETS_PLAN_AR.md` محلياً بانتظار اعتماد الرفع التالي.
+- تم رفع `render.yaml`, `scripts/prepare_split_plan.py`, `docs/SPLIT_MODELS_DATASETS_PLAN_AR.md`, و`docs/LAZAYNOVA_MASTER_PROGRESS_AR.md` ضمن commit `69f46a0e7bc45d766e2683698a8e5ebeef1647f3` إلى `origin/main` (بعد رفع 28 ملفاً في `ee6fe99772943a731dc2fe81cbe5ebfdf09b0200`).
 
 ## 9. Commit SHA لكل رفع
-- `Lazaynova1` (`origin/main`): `ee6fe99772943a731dc2fe81cbe5ebfdf09b0200` (مؤكد).
+- `Lazaynova1` (`origin/main`): `69f46a0e7bc45d766e2683698a8e5ebeef1647f3` (مؤكد).
 
 ## 10. الخدمات السحابية التي تم نشرها
-- [NOT STARTED] لم يتم اعتماد أو التحقق من نشر سحابي جديد بعد.
+- [NOT STARTED] تم تجهيز `render.yaml` وفحص `/health` و`DATABASE_URL`؛ بانتظار ضبط المتغيرات في لوحة Render وربط Supabase والتحقق من الرابط المباشر.
 
 ## 11. روابط الخدمات التي تم التحقق منها
 - لا يوجد رابط خدمة تم التحقق منه بعد.
 
 ## 12. المهام المتبقية
-- اعتماد ورفع ملفات التجهيز الجديدة (`render.yaml`, `scripts/prepare_split_plan.py`, `docs/SPLIT_MODELS_DATASETS_PLAN_AR.md`) وتحديث السجل بعد التحقق من تطابق SHA.
-- إعداد خدمة `backend` على Render وربط متغير `DATABASE_URL` بقاعدة بيانات Supabase (مع تدوير رابط Neon السابق إذا لزم).
+- ضبط `DATABASE_URL` في Render لقاعدة بيانات Supabase والتحقق من استجابة `/health` بعد النشر.
 - إنشاء مستودع `Lazaynova1-datasets` على GitHub وتحديث مسارات النماذج والبيانات قبل فصلها إلى `Lazaynova1-models` و`Lazaynova1-datasets`.
+- متابعة مساحة التخزين (`15G` متاحة حالياً) وإبقاء النسخ الاحتياطية في مكان آمن.
 
 ## 13. المرحلة الحالية
-- جاهزية الاستضافة وتخطيط فصل النماذج والبيانات — بانتظار الاختبار ورفع ملفات التجهيز الجديدة.
+- جاهز لربط `backend` على Render وSupabase والبدء بتجهيز فصل النماذج والبيانات.
 
 ## 14. الخطوة التالية
-- مراجعة التقرير النظيف بعد استبعاد كاش البناء، ثم اختيار رفع ملفات التجهيز الجديدة أو بدء إعداد Render وSupabase.
+- ربط `backend` بقاعدة بيانات Supabase على Render والتحقق من `/health`، أو الانتقال إلى إنشاء `Lazaynova1-datasets` ومراجعة مسارات الفصل.
