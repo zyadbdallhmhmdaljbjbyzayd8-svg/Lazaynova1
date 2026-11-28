@@ -36,7 +36,7 @@
 - [BLOCKED] مستودع `Lazaynova1-datasets` غير ظاهر على `origin` عبر `git ls-remote` ومفقود محلياً.
 
 ## 7. المستودعات التي تم فحصها
-- `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1.git` (محلي وبعيد — مرفوع ومطابق على `f221186262207c0441fff927330b5ddc91b9cf49`؛ توجد تحديثات محلية جديدة في `gateway.py` والسجل).
+- `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1.git` (محلي وبعيد — مرفوع ومطابق على `a1cad3b84b6c14f6450e227f111c7f40ee4cee27`).
 - `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-datasets.git` (تم الفحص عبر `git ls-remote` — لم تُرجع مراجع).
 - `https://github.com/zyadbdallhmhmdaljbjbyzayd8-svg/Lazaynova1-models.git` (محلي وبعيد — `047b73d` على `main`).
 
@@ -44,7 +44,7 @@
 - تم رفع `render.yaml`, `scripts/prepare_split_plan.py`, `docs/SPLIT_MODELS_DATASETS_PLAN_AR.md`, و`docs/LAZAYNOVA_MASTER_PROGRESS_AR.md` عبر `69f46a0e7bc45d766e2683698a8e5ebeef1647f3` و`f221186262207c0441fff927330b5ddc91b9cf49` إلى `origin/main`.
 
 ## 9. Commit SHA لكل رفع
-- `Lazaynova1` (`origin/main`): `f221186262207c0441fff927330b5ddc91b9cf49` (مؤكد للرفع السابق).
+- `Lazaynova1` (`origin/main`): `a1cad3b84b6c14f6450e227f111c7f40ee4cee27` (مؤكد).
 
 ## 10. الخدمات السحابية التي تم نشرها
 - [NOT STARTED] تم تجهيز `render.yaml` وفحص `/health` و`DATABASE_URL`؛ بانتظار ضبط المتغيرات في لوحة Render وربط Supabase والتحقق من الرابط المباشر.
