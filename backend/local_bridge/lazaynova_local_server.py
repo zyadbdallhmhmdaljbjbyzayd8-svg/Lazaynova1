@@ -1,4 +1,4 @@
-"""Threaded loopback REST bridge for LAZAYNOVA native L3 V2."""
+"""Private loopback inference bridge for LAZAYNOVA native L3 V3."""
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json, logging, sys
 from pathlib import Path
@@ -32,8 +32,9 @@ class LazaynovaHandler(BaseHTTPRequestHandler):
         if path=="/health":
             return self._send(200,{"status":"healthy","service":"LAZAYNOVA","mode":"LOCAL_ONLY"})
         if path=="/v1/models":
-            return self._send(200,{"object":"list","data":[{"id":"LAZAYNOVA-L3-native-v2","object":"model","owned_by":"LAZAYNOVA"}]})
+            return self._send(200,{"object":"list","data":[{"id":"LAZAYNOVA-L3-native-v3","object":"model","owned_by":"LAZAYNOVA"}]})
         if path=="/api/model/status":
+            gateway.load_model(required=False)
             return self._send(200,gateway.model_status_report())
         return self._send(404,{"error":{"message":"not found"}})
     def do_POST(self):
@@ -59,6 +60,6 @@ class LazaynovaHandler(BaseHTTPRequestHandler):
         logging.info("%s - %s",self.address_string(),fmt%args)
 
 if __name__=="__main__":
-    host,port="127.0.0.1",8787
+    host,port="127.0.0.1",8788
     print(f"LAZAYNOVA local API: http://{host}:{port}",flush=True)
     ThreadingHTTPServer((host,port),LazaynovaHandler).serve_forever()

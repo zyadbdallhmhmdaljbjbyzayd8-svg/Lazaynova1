@@ -14,6 +14,8 @@ android {
         versionName = "0.1.0"
         val apiBase = project.findProperty("API_BASE_URL")?.toString() ?: "http://10.0.2.2:8787"
         buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
+        val googleClientId = project.findProperty("GOOGLE_WEB_CLIENT_ID")?.toString() ?: ""
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$googleClientId\"")
     }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions {
@@ -25,6 +27,9 @@ android {
 dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")

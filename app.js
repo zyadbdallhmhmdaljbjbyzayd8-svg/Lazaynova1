@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:8788';
+const API_BASE_URL = 'http://127.0.0.1:8787';
 let currentEngineId = 'chat';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       removeMessage(loadingId);
-      appendMessage('[خطأ في الاتصال بالخادم المحلي]: تأكد أن خادم المنفذ 8788 يعمل.', 'assistant');
+      appendMessage('[خطأ في الاتصال بالخادم المحلي]: تأكد أن الخادم المركزي على المنفذ 8787 يعمل.', 'assistant');
     }
   }
 

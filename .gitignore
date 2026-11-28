@@ -32,3 +32,8 @@ backend/data/knowledge.json
 *.jks
 *.kt.backup
 *.log
+.neon
+*.backup.*
+backups/
+__pycache__/
+*.pyc
