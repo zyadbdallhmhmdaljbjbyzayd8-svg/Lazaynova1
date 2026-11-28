@@ -62,3 +62,5 @@
 
 ## 14. الخطوة التالية
 - ضبط `DATABASE_URL` و`PGSSL` في لوحة Render لقاعدة بيانات Supabase ونشر خدمة `lazaynova-backend-api` ثم فحص `/health`.
+
+- [DONE] تنفيذ هجرة قاعدة البيانات `001_auth` (`users` و`refresh_sessions`) بنجاح على Supabase (`Database migration 001_auth completed.`).
