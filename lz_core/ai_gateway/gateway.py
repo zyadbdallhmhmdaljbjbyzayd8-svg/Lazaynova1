@@ -21,8 +21,11 @@ from inference.generate import UTF8ConstrainedGenerator
 
 ROOT = Path(__file__).resolve().parents[2]
 
-CHECKPOINT_PATH = (
-    ROOT / "native_ai/checkpoints/l3_checkpoint_v3.pt"
+CHECKPOINT_PATH = Path(
+    os.environ.get(
+        "LAZAYNOVA_CHECKPOINT_PATH",
+        str(ROOT / "native_ai/checkpoints/l3_checkpoint_v3.pt"),
+    )
 )
 
 SUPPORTED_FORMATS = {
